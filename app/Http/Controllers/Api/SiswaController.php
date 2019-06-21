@@ -57,7 +57,7 @@ class SiswaController extends Controller
 
         //2. Buat Validasi ditampung ke $validator
         $validator = Validator::make($input, [
-            'nama' => 'required|min:15'
+            'nama' => 'required|min:5'
         ]);
       
         //3. chek validasi
@@ -115,21 +115,7 @@ class SiswaController extends Controller
      */
     public function edit($id)
     {
-         $siswa = Siswa::findOrFail($id);
-        if (!$siswa) {
-            $response = [
-                'success' => false,
-                'data' => 'Empty',
-                'message' =>'Siswa Tidak ditemukan'
-            ];
-            return response()->json($response, 404);
-        }
-         $response = [
-                'success' => true,
-                'data' => $siswa,
-                'message' =>'berhasil'
-            ];
-            return response()->json($response, 200);
+        
     
     }
 
@@ -142,7 +128,39 @@ class SiswaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+         $siswa = Siswa::find($id);
+         $input = $request->all();
+        if (!$siswa) {
+            $response = [
+                'success' => false,
+                'data' => 'Empty',
+                'message' =>'Siswa Tidak ditemukan'
+            ];
+            return response()->json($response, 404);
+        }
+
+         $validator = Validator::make($input, [
+            'nama' => 'required|min:5'
+        ]);
+      
+        if ($validator->fails()){
+             $response = [
+                'success' => false,
+                'data' => 'Validator Eror',
+                'message' =>'$validator->errors()'
+            ];
+            return response()->json($response, 500);
+        }
+
+        $siswa->nama = $input['nama'];
+        $siswa->save();
+
+         $response = [
+                'success' => true,
+                'data' => $siswa,
+                'message' =>'siswa berhasil diupdate'
+            ];
+            return response()->json($response, 200);
     }
 
     /**
