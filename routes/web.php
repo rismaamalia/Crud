@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('index');
 });
 
 Auth::routes();
@@ -37,4 +37,8 @@ Route::get('archive', function() {
 
 Route::get('single-blog', function() {
     return view('single-blog');
+});
+
+Route::get('blog', function() {
+    return view('blog');
 });
