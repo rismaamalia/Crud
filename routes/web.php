@@ -42,3 +42,15 @@ Route::get('single-blog', function() {
 Route::get('blog', function() {
     return view('blog');
 });
+	//admin
+		Route::group(
+			['prefix' => 'admin','middleware' =>['auth']],
+			function () {
+				Route::get('/', function () {
+					return view('backend');
+				});
+				Route::resource('kategori','Api\KategoriController');
+				Route::resource('tag','Api\TagController');
+				Route::resource('artikel','Api\ArtikelController');
+			}
+		);
